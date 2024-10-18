@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model categories {
+  id       Int        @id(map: "PK__categori__3213E83F10D9B8E2") @default(autoincrement())
+  name     String?    @db.NVarChar(200)
+  products products[]
+}
+
+model products {
+  id          Int         @id(map: "PK__products__3213E83F1F7CB2F6") @default(autoincrement())
+  title       String?     @unique(map: "UQ__products__E52A1BB3E5E00D58") @db.NVarChar(200)
+  price       Float?
+  description String?     @db.NVarChar(500)
+  image       String?     @db.NVarChar(500)
+  categoryId  Int?
+  basket      basket[]
+  categories  categories? @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__products__catego__5AEE82B9")
+}
+
+model users {
+  id       Int      @id(map: "PK__users__3213E83FE133E3E0") @default(autoincrement())
+  name     String?  @db.NVarChar(200)
+  email    String?  @unique(map: "UQ__users__AB6E6164B6A31395") @db.NVarChar(200)
+  password String?  @db.NVarChar(200)
+  hashRt   String?  @db.NVarChar(500)
+  role     String?  @db.NVarChar(20)
+  basket   basket[]
+  orders   orders[]
+}
+
+model basket {
+  id        Int       @id(map: "PK__basket__3213E83F02EE333C") @default(autoincrement())
+  userId    Int?
+  productId Int?
+  quantity  Int?
+  products  products? @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__basket__productI__70DDC3D8")
+  users     users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__basket__userId__6FE99F9F")
+}
+
+model orders {
+  id            Int       @id(map: "PK__orders__3213E83FCC5CFCBC") @default(autoincrement())
+  userId        Int?
+  count_product Int?
+  total_price   Int?
+  order_date    DateTime? @db.Date
+  confirm       String?   @db.NVarChar(200)
+  users         users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK__orders__userId__73BA3083")
+}

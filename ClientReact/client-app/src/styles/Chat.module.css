@@ -1,0 +1,33 @@
+.body {
+    flex-grow: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+.chat {
+    padding: 12px ;
+    overflow-y: auto;
+    max-height: 275px;
+}
+
+.form {
+display: flex;
+flex-direction: column;
+row-gap: 10px;
+}
+
+.group {
+display: flex;
+width: 100%;
+background: #212123;
+border-radius: 8px;
+color: var(--light);
+padding: 12px 24px;
+}
+
+.group input {
+width: 100%;
+}
+  
